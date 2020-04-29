@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyTitle>coverlet.collector</AssemblyTitle>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!-- 
+          suppress warning https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu5128 
+          If your package does not contain any lib/ or ref/ files and is not a meta-package, 
+          it likely does not have any dependencies that the package consumer needs. 
+          If you are packing with NuGet's MSBuild Pack target, you can set <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking> in any PropertyGroup in your project file.
+    -->
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackBuildOutputs</TargetsForTfmSpecificContentInPackage>
+    <!-- Open issue https://github.com/NuGet/Home/issues/8941 -->
+    <NoWarn>$(NoWarn);NU5127</NoWarn>
+  </PropertyGroup>
+
+  <!-- Nuget package properties https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets -->
+  <PropertyGroup>
+    <Title>coverlet.collector</Title>
+    <PackageId>coverlet.collector</PackageId>
+    <Authors>tonerdo</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>http://github.com/tonerdo/coverlet</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/tonerdo/coverlet/master/_assets/coverlet-icon.svg?sanitize=true</PackageIconUrl>
+    <PackageIcon>coverlet-icon.png</PackageIcon>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>Coverlet is a cross platform code coverage library for .NET, with support for line, branch and method coverage.</Description>
+    <PackageTags>coverage testing unit-test lcov opencover quality</PackageTags>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="build\**" Pack="true" PackagePath="" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\_assets\coverlet-icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\coverlet.core\coverlet.core.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+  <Target Name="PackBuildOutputs">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(TargetDir)\*.dll" PackagePath="build\netstandard1.0\" />
+      <TfmSpecificPackageFile Include="$(TargetDir)\*.pdb" PackagePath="build\netstandard1.0\" />
+      <TfmSpecificPackageFile Include="$(TargetDir)\*.deps.json" PackagePath="build\netstandard1.0\" />
+    </ItemGroup>
+  </Target>
+</Project>
